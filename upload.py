@@ -1,13 +1,13 @@
 #to send online, open cmd prompt type in ngrok http 5000 then enter
 #alt paste this in to use https://promptly-promoted-husky.ngrok-free.app link
-#ngrok tunnel --label edge=edghts_2eSOqHswFI8cpQxpxVNEEstbKAi http://192.168.1.36:5000
+#     ngrok tunnel --label edge=edghts_2eSOqHswFI8cpQxpxVNEEstbKAi http://192.168.1.36:5000
 from flask import Flask, request, render_template, send_from_directory, redirect
 from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
 
-PASSWORD = "Chand Raat by Uzma"
+PASSWORD = "Chand Raat by Uzma 2024"
 USERS_FILE = "users.txt" 
 
 # Specify the upload folder
@@ -48,11 +48,18 @@ def login():
     password = request.form.get('password')
 
     # Your authentication logic here
-    # For demonstration, I'm just printing the username and password
     print("Username:", username)
     print("Password:", password)
+    if password == PASSWORD:
+        # Store username in the text file
+        with open(USERS_FILE, 'a') as f:
+            f.write(username + '\n')
+        # Redirect to index page if password is correct
+        return render_template('index.html')
+    else:
+        # Redirect back to login page with error message
+        return render_template('signin.html', error="Invalid password.")
 
-    return render_template('index.html')
 
 @app.route('/uploads/<filename>')
 def display_image(filename):
